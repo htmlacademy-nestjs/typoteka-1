@@ -1,0 +1,9 @@
+version: '3.5'
+services:
+  fakesmtp:
+    image: gessnerfl/fake-smtp-server
+    container_name: "typoteka.notify.fakesmtp"
+    hostname: "fakesmtp"
+    ports:
+      - "5025:5025"
+      - "1083:5080"
