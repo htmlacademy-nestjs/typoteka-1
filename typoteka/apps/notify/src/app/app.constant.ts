@@ -7,4 +7,8 @@ export enum EnvValidationMessage {
   DBUserRequired = 'MongoDB user is required',
   DBPasswordRequired = 'MongoDB password is required',
   DBBaseAuthRequired = 'MongoDB authentication base is required',
+  RMQHostRequired = 'RabbitMQ host is required',
+  RMQUserRequired = 'RabbitMQ user is required',
+  RMQPasswordRequired = 'RabbitMQ password is required',
+  RMQSubscriberQueue = 'RabbitMQ Subscribers Queue is required',
 }
