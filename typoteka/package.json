@@ -9,6 +9,7 @@
   },
   "private": true,
   "dependencies": {
+    "@nestjs-modules/mailer": "1.8.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "2.2.0",
     "@nestjs/core": "^9.0.0",
@@ -26,6 +27,7 @@
     "class-validator": "0.13.2",
     "joi": "17.7.0",
     "mongoose": "6.7.2",
+    "nodemailer": "6.8.0",
     "passport": "0.6.0",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
@@ -46,6 +48,7 @@
     "@types/bcrypt": "5.0.0",
     "@types/jest": "28.1.1",
     "@types/node": "18.7.1",
+    "@types/nodemailer": "6.4.7",
     "@types/passport": "1.0.11",
     "@types/passport-jwt": "3.0.7",
     "@types/passport-local": "1.0.34",
