@@ -13,7 +13,8 @@
         "outputPath": "dist/apps/blog",
         "main": "apps/blog/src/main.ts",
         "tsConfig": "apps/blog/tsconfig.app.json",
-        "assets": ["apps/blog/src/assets"]
+        "assets": ["apps/blog/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
