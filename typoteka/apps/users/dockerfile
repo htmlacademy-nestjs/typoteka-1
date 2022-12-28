@@ -1,0 +1,6 @@
+FROM node:lts-alpine
+WORKDIR /app
+COPY ./dist/apps/users .
+RUN npm install --production
+RUN npm prune --production
+CMD ["node", "./main.js"]
