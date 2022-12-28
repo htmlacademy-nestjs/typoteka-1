@@ -55,6 +55,15 @@
         "jestConfig": "apps/users/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "nx run users:build",
+          "docker build -f ./apps/blog/dockerfile . -t typoteka.users --no-cache --force-rm"
+        ]
+      }
     }
   },
   "tags": []
