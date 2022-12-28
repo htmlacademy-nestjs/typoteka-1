@@ -1,0 +1,80 @@
+version: '3.5'
+services:
+  fakesmtp:
+    image: gessnerfl/fake-smtp-server
+    container_name: "typoteka.notify.fakesmtp"
+    ports:
+      - "5025:5025"
+      - "1083:5080"
+
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: typoteka.notify.rabbitmq
+    hostname: rabbitmq
+    ports:
+      - '1084:15672'
+      - '5672:5672'
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: test
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo
+    container_name: typoteka.notify.mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: test
+      MONGO_INITDB_DATABASE: typoteka-notify
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/typoteka-notify --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  mongodb-express:
+    image: mongo-express
+    depends_on:
+      - mongodb
+    container_name: typoteka.notify.mongo-express
+    ports:
+      - 1085:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: test
+      ME_CONFIG_MONGODB_URL: mongodb://admin:test@mongodb:27017/
+
+  typoteka.notify:
+    image: typoteka.notify
+    depends_on:
+      - mongodb
+      - mongodb-express
+      - rabbitmq
+      - fakesmtp
+    container_name: typoteka.notify.service
+    ports:
+      - 3334:3333
+    environment:
+      RABBIT_USER: admin
+      RABBIT_PASSWORD: test
+      RABBIT_HOST: rabbitmq:5672
+      RABBIT_NOTIFY_SERVICE_QUEUE: typoteka.subscribers
+      MONGO_DB: typoteka-notify
+      MONGO_HOST: mongodb
+      MONGO_PORT: 27017
+      MONGO_USER: admin
+      MONGO_PASSWORD: test
+      MONGO_AUTH_BASE: admin
+      MAIL_SMTP_HOST: fakesmtp
+      MAIL_SMTP_PORT: 5025
+      MAIL_USER_NAME: admin
+      MAIL_USER_PASSWORD: test
+      MAIL_FROM: <noreply@notify.local>
